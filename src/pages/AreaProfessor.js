@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AreaProfessor.css";
+import PortalButton from "../components/PortalButton";
 
 const AreaProfessor = () => {
   const navigate = useNavigate();
@@ -32,6 +33,40 @@ const AreaProfessor = () => {
           </button>
         </div>
       </header>
+
+      <div className="content">
+        <div className="portal-button-wrapper">
+          <PortalButton
+            icon="bi bi-person-plus"
+            label="Cadastrar Aluno"
+            onClick={() => navigate("/register-student")}
+          />
+        </div>
+
+        <div className="portal-button-wrapper">
+          <PortalButton
+            icon="bi bi-person-lines-fill"
+            label="Listar Alunos"
+            onClick={() => navigate("/list-students")}
+          />
+        </div>
+
+        <div className="portal-button-wrapper">
+          <PortalButton
+            icon="bi bi-journal-plus"
+            label="Cadastrar Aula"
+            onClick={() => navigate("/register-class")}
+          />
+        </div>
+
+        <div className="portal-button-wrapper">
+          <PortalButton
+            icon="bi bi-journal-text"
+            label="Listar Aulas"
+            onClick={() => navigate("/list-classes")}
+          />
+        </div>
+      </div>
     </div>
   );
 };

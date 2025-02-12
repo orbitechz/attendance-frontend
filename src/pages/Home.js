@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 import logo from "../assets/logo.png";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import PortalButton from "../components/PortalButton";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -31,19 +31,17 @@ const Home = () => {
         <img src={logo} alt="Descomplica + UniAmérica" className="logo" />
 
         <div className="portals d-flex flex-column">
-          <button className="portal-btn" onClick={() => navigate("/area-professor")}>
-            <div className="portal-icon">
-              <i className="bi bi-file-earmark-text"></i>
-            </div>
-            <span>Portal do Professor</span>
-          </button>
+          <PortalButton
+            icon="bi-file-earmark-text"
+            label="Portal do Professor"
+            onClick={() => navigate("/area-professor")}
+          />
 
-          <button className="portal-btn" onClick={() => navigate("/area-aluno")}>
-            <div className="portal-icon">
-              <i className="bi bi-mortarboard"></i>
-            </div>
-            <span>Portal do Aluno</span>
-          </button>
+          <PortalButton
+            icon="bi-mortarboard"
+            label="Portal do Aluno"
+            onClick={() => navigate("/area-aluno")}
+          />
         </div>
       </div>
     </div>

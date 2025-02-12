@@ -1,9 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../styles/AreaAluno.css'
-import PortalButton from '../components/PortalButton'
+import '../styles/index.css'
 
-const AreaAluno = () => {
+const AttendanceHistory = () => {
     const navigate = useNavigate()
 
     const today = new Date().toLocaleDateString('pt-BR', {
@@ -12,7 +11,7 @@ const AreaAluno = () => {
         month: 'long'
     })
     return (
-        <div className="portal-aluno-container">
+        <div className="generic-container">
             <header className="header">
                 <div className="main-header d-flex flex-column">
                     <p className="title fw-bold">Portal do Aluno</p>
@@ -33,23 +32,11 @@ const AreaAluno = () => {
                 </div>
             </header>
 
-            <div className="action-container d-flex flex-column align-items-center justify-content-center">
-                <div className="portals d-flex flex-column">
-                    <PortalButton
-                        icon="bi-calendar-check"
-                        label="Registrar Presença"
-                        onClick={() => navigate('/register-attendance')}
-                    />
-
-                    <PortalButton
-                        icon="bi-clock-history"
-                        label="Histórico de Presença"
-                        onClick={() => navigate('/attendance-history')}
-                    />
-                </div>
+            <div>
+                <h1>Histórico de Presença</h1>
             </div>
         </div>
     )
 }
 
-export default AreaAluno
+export default AttendanceHistory

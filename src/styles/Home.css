@@ -41,15 +41,23 @@ body {
 }
 
 .logout-btn {
-  background: none;
-  border: none;
-  color: #5C5E64;
-  cursor: pointer;
-  font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-weight: 600;
+  padding: 10px 20px;
+  background-color: #f6725c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn i {
+  margin-right: 10px;
+}
+
+.logout-btn:hover {
+  background-color: #e05a4f;
 }
 
 /* Logo */

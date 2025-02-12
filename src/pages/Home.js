@@ -22,7 +22,7 @@ const Home = () => {
           <p className="date">{today}</p>
         </div>
         <button className="logout-btn">
-          <i className="bi bi-box-arrow-right" style={{ fontSize: "20px", color: "#F6725C" }}></i>
+          <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
           Log out
         </button>
       </header>

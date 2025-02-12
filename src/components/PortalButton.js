@@ -9,7 +9,7 @@ const PortalButton = ({ icon, label, onClick }) => {
         <i className={`bi ${icon}`}></i>
       </div>
       <span>{label}</span>
-    </button>
+    </button>   
   );
 };
 

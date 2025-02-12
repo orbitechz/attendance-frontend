@@ -1,0 +1,19 @@
+.back-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn i {
+    margin-right: 10px;
+}
+
+.back-btn:hover {
+    background-color: #45a049;
+}

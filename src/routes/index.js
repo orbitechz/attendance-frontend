@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Home from "../pages/Home";
 import AreaProfessor from "../pages/AreaProfessor";
 import AreaAluno from "../pages/AreaAluno";
@@ -19,10 +24,10 @@ const AppRoutes = () => {
         <Route path="/list-students" element={<ListStudents />} />
         <Route path="/register-class" element={<RegisterClass />} />
         <Route path="/list-classes" element={<ListClasses />} />
+        <Route path="/list-attendance" element={<ListClasses />} />
       </Routes>
     </Router>
   );
 };
 
 export default AppRoutes;
-

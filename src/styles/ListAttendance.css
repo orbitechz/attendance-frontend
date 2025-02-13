@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
@@ -48,7 +48,7 @@ td:last-child {
 td:last-child::before {
     content: attr(data-status);
     display: none;
-}
+} */
 
 @media (max-width: 600px) {
     table, thead, tbody, th, td, tr {

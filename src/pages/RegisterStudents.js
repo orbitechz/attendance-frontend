@@ -15,6 +15,9 @@ const RegisterStudents = () => {
     email: "",
   });
 
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -50,10 +53,12 @@ const RegisterStudents = () => {
           headers: { "Content-Type": "application/json" }
         });
         console.log("Aluno cadastrado com sucesso:", response.data);
-        alert("Aluno cadastrado com sucesso!");
+        setMessage("Aluno cadastrado com sucesso!");
+        setMessageType("success");
       } catch (error) {
         console.error("Erro ao cadastrar aluno:", error);
-        alert("Erro ao cadastrar aluno. Verifique os dados e tente novamente.");
+        setMessage("Erro ao cadastrar aluno. Verifique os dados e tente novamente.");
+        setMessageType("error");
       }
     } else {
       console.log("Form contains errors:", errors);
@@ -85,6 +90,7 @@ const RegisterStudents = () => {
         </div>
       </header>
       <form className="register-form" onSubmit={handleSubmit}>
+        {message && <p className={`message ${messageType}`}>{message}</p>}
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="name">Nome Completo</label>
@@ -122,8 +128,13 @@ const RegisterStudents = () => {
             />
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
+        </div>
+        <div className="form-actions d-flex">
           <button type="submit" className="register-btn">
             Cadastrar Aluno
+          </button>
+          <button type="button" className="list-students-btn" onClick={() => navigate("/list-students")}>
+            Listar Alunos
           </button>
         </div>
       </form>

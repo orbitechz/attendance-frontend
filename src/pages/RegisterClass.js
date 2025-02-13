@@ -6,9 +6,12 @@ import axios from "axios";
 const RegisterClass = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nomeDaAula: "",
-    data: new Date().toISOString().split("T")[0],
+    title: "",
+    date: new Date().toISOString().split("T")[0],
   });
+
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,10 +24,19 @@ const RegisterClass = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/classes", formData);
+      const formattedDate = `${formData.date}T00:00:00`;
+      const requestData = { ...formData, date: formattedDate };
+
+      const response = await axios.post("/api/lesson", requestData);
       console.log("Class data submitted:", response.data);
+      setMessage("Aula cadastrada com sucesso!");
+      setMessageType("success");
     } catch (error) {
       console.error("Error submitting class data:", error);
+      setMessage(
+        "Erro ao cadastrar aula. Verifique os dados e tente novamente."
+      );
+      setMessageType("error");
     }
   };
 
@@ -39,11 +51,14 @@ const RegisterClass = () => {
       <header className="header">
         <div className="main-header d-flex flex-column">
           <p className="title">Cadastrar Aula</p>
-            <p className="date">{today}</p>
+          <p className="date">{today}</p>
         </div>
         <div className="actions d-flex gap-3">
           <button className="logout-btn">
-            <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
+            <i
+              className="bi bi-box-arrow-right"
+              style={{ fontSize: "20px" }}
+            ></i>
             Log out
           </button>
           <button className="back-btn" onClick={() => navigate("/")}>
@@ -53,33 +68,43 @@ const RegisterClass = () => {
         </div>
       </header>
       <form className="register-form" onSubmit={handleSubmit}>
+        {message && <p className={`message ${messageType}`}>{message}</p>}
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="nomeDaAula">Nome da Aula</label>
+            <label htmlFor="title">Nome da Aula</label>
             <input
               type="text"
-              id="nomeDaAula"
-              name="nomeDaAula"
-              value={formData.nomeDaAula}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="data">Data</label>
+            <label htmlFor="date">Data</label>
             <input
               type="date"
-              id="data"
-              name="data"
-              value={formData.data}
+              id="date"
+              name="date"
+              value={formData.date}
               onChange={handleChange}
               required
             />
           </div>
         </div>
-        <button type="submit" className="register-btn">
-          Cadastrar Aula
-        </button>
+        <div className="form-actions d-flex">
+          <button type="submit" className="register-btn">
+            Cadastrar Aula
+          </button>
+          <button
+            type="button"
+            className="list-classes-btn"
+            onClick={() => navigate("/list-classes")}
+          >
+            Listar Aulas
+          </button>
+        </div>
       </form>
     </div>
   );

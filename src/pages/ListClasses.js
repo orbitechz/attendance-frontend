@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const ListClasses = () => {
   const [lessons, setLessons] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedOpenStatus, setSelectedOpenStatus] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,10 +35,26 @@ const ListClasses = () => {
     navigate(`/lesson/${id}/presence`);
   };
 
+  const handleClose = async (id) => {
+    try {
+      const response = await axios.put(`http://localhost:8080/api/lesson/close/${id}`);
+      setLessons(lessons.map((lesson) => (lesson.id === id ? response.data : lesson)));
+    } catch (error) {
+      console.error("Error closing lesson:", error);
+    }
+  };
+
   const today = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
     day: "numeric",
     month: "long",
+  });
+
+  const filteredLessons = lessons.filter((lesson) => {
+    const lessonDate = new Date(lesson.date).toISOString().split('T')[0];
+    const matchesDate = selectedDate ? lessonDate === selectedDate : true;
+    const matchesOpenStatus = selectedOpenStatus === "all" ? true : (lesson.open === null ? true : lesson.open === (selectedOpenStatus === "open"));
+    return matchesDate && matchesOpenStatus;
   });
 
   return (
@@ -61,6 +79,25 @@ const ListClasses = () => {
         </div>
       </header>
       <div className="table-container">
+        <div className="filter-container d-flex gap-3 align-end">
+          <label htmlFor="date-filter">Filtrar por Data:</label>
+          <input
+            type="date"
+            id="date-filter"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+          <label htmlFor="open-status-filter">Filtrar por Status:</label>
+          <select
+            id="open-status-filter"
+            value={selectedOpenStatus}
+            onChange={(e) => setSelectedOpenStatus(e.target.value)}
+          >
+            <option value="all">Todos</option>
+            <option value="open">Abertos</option>
+            <option value="closed">Fechados</option>
+          </select>
+        </div>
         <table>
           <thead>
             <tr>
@@ -70,13 +107,16 @@ const ListClasses = () => {
             </tr>
           </thead>
           <tbody>
-            {lessons.map((lesson) => (
+            {filteredLessons.map((lesson) => (
               <tr key={lesson.id}>
                 <td>{lesson.title}</td>
                 <td>{new Date(lesson.date).toLocaleDateString("pt-BR")}</td>
                 <td>
-                  <button className="remover-btn" onClick={() => handleRemove(lesson.id)}>Remover</button>
                   <button className="presenca-btn" onClick={() => handlePresence(lesson.id)}>Presença</button>
+                  {lesson.open !== false && (
+                    <button className="close-btn" onClick={() => handleClose(lesson.id)}>Fechar Aula</button>
+                  )}
+                  <button className="remover-btn" onClick={() => handleRemove(lesson.id)}>Remover</button>
                 </td>
               </tr>
             ))}

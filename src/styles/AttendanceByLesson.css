@@ -1,11 +1,3 @@
-.register-students-container {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    height: 100vh;
-    background-color: #ffffff;
-    margin-top: 100px;
-}
 
 form {
     padding: 30px;
@@ -14,7 +6,6 @@ form {
 .actions {
     margin-top: 20px;
 }
-
 
 form {
     background-color: white;
@@ -57,12 +48,6 @@ form {
     outline: none;
 }
 
-.error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
 .register-btn {
     display: flex;
     align-items: center;
@@ -93,22 +78,4 @@ form {
     color: #721c24;
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
-}
-
-.list-students-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-left: 10px;
-}
-
-.list-students-btn:hover {
-    background-color: #0056b3;
 }

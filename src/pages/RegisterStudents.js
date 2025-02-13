@@ -6,7 +6,7 @@ import axios from "axios";
 const RegisterStudents = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nomeCompleto: "",
+    name: "",
     ra: "",
     email: "",
   });
@@ -46,10 +46,14 @@ const RegisterStudents = () => {
     e.preventDefault();
     if (!errors.email) {
       try {
-        const response = await axios.post("/api/students", formData);
-        console.log("Form data submitted:", response.data);
+        const response = await axios.post("http://localhost:8080/api/student", formData, {
+          headers: { "Content-Type": "application/json" }
+        });
+        console.log("Aluno cadastrado com sucesso:", response.data);
+        alert("Aluno cadastrado com sucesso!");
       } catch (error) {
-        console.error("Error submitting form data:", error);
+        console.error("Erro ao cadastrar aluno:", error);
+        alert("Erro ao cadastrar aluno. Verifique os dados e tente novamente.");
       }
     } else {
       console.log("Form contains errors:", errors);
@@ -71,10 +75,7 @@ const RegisterStudents = () => {
         </div>
         <div className="actions d-flex gap-3">
           <button className="logout-btn">
-            <i
-              className="bi bi-box-arrow-right"
-              style={{ fontSize: "20px" }}
-            ></i>
+            <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
             Log out
           </button>
           <button className="back-btn" onClick={() => navigate("/")}>
@@ -86,12 +87,12 @@ const RegisterStudents = () => {
       <form className="register-form" onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="nomeCompleto">Nome Completo</label>
+            <label htmlFor="name">Nome Completo</label>
             <input
               type="text"
-              id="nomeCompleto"
-              name="nomeCompleto"
-              value={formData.nomeCompleto}
+              id="name"
+              name="name"   
+              value={formData.name}
               onChange={handleChange}
               required
             />

@@ -4,33 +4,33 @@ import "../styles/ListClasses.css";
 import { useNavigate } from "react-router-dom";
 
 const ListClasses = () => {
-  const [aulas, setAulas] = useState([]);
+  const [lessons, setLessons] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAulas = async () => {
+    const fetchLessons = async () => {
       try {
-        const response = await axios.get("/api/aulas");
-        setAulas(response.data);
+        const response = await axios.get("http://localhost:8080/api/lesson"); 
+        setLessons(response.data);
       } catch (error) {
-        console.error("Error fetching aulas:", error);
+        console.error("Error fetching lessons:", error);
       }
     };
 
-    fetchAulas();
+    fetchLessons();
   }, []);
 
   const handleRemove = async (id) => {
     try {
-      await axios.delete(`/api/aulas/${id}`);
-      setAulas(aulas.filter((aula) => aula.id !== id));
+      await axios.delete(`http://localhost:8080/api/lesson/${id}`);
+      setLessons(lessons.filter((lesson) => lesson.id !== id));
     } catch (error) {
-      console.error("Error removing aula:", error);
+      console.error("Error removing lesson:", error);
     }
   };
 
-  const handlePresenca = (id) => {
-    navigate(`/aulas/${id}/presenca`);
+  const handlePresence = (id) => {
+    navigate(`/lesson/${id}/presence`);
   };
 
   const today = new Date().toLocaleDateString("pt-BR", {
@@ -40,7 +40,7 @@ const ListClasses = () => {
   });
 
   return (
-    <div className="list-aulas-container">
+    <div className="list-classes-container">
       <header className="header">
         <div className="main-header d-flex flex-column">
           <p className="title">Acessar Aulas</p>
@@ -66,17 +66,17 @@ const ListClasses = () => {
             <tr>
               <th>Nome da Aula</th>
               <th>Data da Aula</th>
-              <th>Actions</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {aulas.map((aula) => (
-              <tr key={aula.id}>
-                <td>{aula.nome}</td>
-                <td>{aula.data}</td>
+            {lessons.map((lesson) => (
+              <tr key={lesson.id}>
+                <td>{lesson.title}</td>
+                <td>{new Date(lesson.date).toLocaleDateString("pt-BR")}</td>
                 <td>
-                  <button className="remover-btn" onClick={() => handleRemove(aula.id)}>Remover</button>
-                  <button className="presenca-btn" onClick={() => handlePresenca(aula.id)}>Presença</button>
+                  <button className="remover-btn" onClick={() => handleRemove(lesson.id)}>Remover</button>
+                  <button className="presenca-btn" onClick={() => handlePresence(lesson.id)}>Presença</button>
                 </td>
               </tr>
             ))}

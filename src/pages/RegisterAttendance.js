@@ -6,19 +6,19 @@ import "../styles/RegisterAttendance.css";
 
 const RegisterAttendance = () => {
     const navigate = useNavigate();
-    const [openLessons, setOpenLessons] = useState([]);
+    const [lessons, setLessons] = useState([]);
 
     useEffect(() => {
-        const fetchOpenLessons = async () => {
+        const fetchLessons = async () => {
             try {
-                const response = await axios.get('/api/lesson/open');
-                setOpenLessons(response.data);
+                const response = await axios.get('/api/lesson');
+                setLessons(response.data);
             } catch (error) {
-                console.error('Error fetching open lessons:', error);
+                console.error('Error fetching lessons:', error);
             }
         };
 
-        fetchOpenLessons();
+        fetchLessons();
     }, []);
 
     const today = new Date().toLocaleDateString("pt-BR", {
@@ -26,6 +26,10 @@ const RegisterAttendance = () => {
         day: "numeric",
         month: "long",
     });
+
+    // Filter and sort lessons by date
+    const openLessons = lessons.filter(lesson => lesson.open).sort((a, b) => new Date(a.date) - new Date(b.date));
+    const closedLessons = lessons.filter(lesson => !lesson.open).sort((a, b) => new Date(a.date) - new Date(b.date));
 
     return (
         <div className="register-students-container">
@@ -51,10 +55,24 @@ const RegisterAttendance = () => {
                 <div className="lessons-container d-flex gap-3">
                     {openLessons.map(lesson => (
                         <PortalButton
+                            icon={"bi bi-calendar-check"}
                             key={lesson.id}
                             label={`${lesson.title} - ${new Date(lesson.date).toLocaleDateString("pt-BR")}`}
                             onClick={() => navigate(`/attendance-student/${lesson.id}`)}
-                            />
+                        />
+                    ))}
+                </div>
+                <p className='title-aulas'>Aulas Fechadas</p>
+                <hr className='line'/>
+                <div className="lessons-container d-flex gap-3">
+                    {closedLessons.map(lesson => (
+                        <PortalButton
+                            icon={"bi bi-calendar-x"}
+                            key={lesson.id}
+                            label={`${lesson.title} - ${new Date(lesson.date).toLocaleDateString("pt-BR")}`}
+                            onClick={() => navigate(`/attendance-student/${lesson.id}`)}
+                            disabled
+                        />
                     ))}
                 </div>
             </div>

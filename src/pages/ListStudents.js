@@ -7,11 +7,10 @@ const ListStudents = () => {
   const [students, setStudents] = useState([]);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get("/api/students");
+        const response = await axios.get("/api/student");
         setStudents(response.data);
       } catch (error) {
         console.error("Error fetching students:", error);
@@ -23,7 +22,7 @@ const ListStudents = () => {
 
   const handleRemove = async (id) => {
     try {
-      await axios.delete(`/api/students/${id}`);
+      await axios.delete(`/api/student/${id}`);
       setStudents(students.filter((student) => student.id !== id));
     } catch (error) {
       console.error("Error removing student:", error);
@@ -45,10 +44,7 @@ const ListStudents = () => {
         </div>
         <div className="actions d-flex gap-3">
           <button className="logout-btn">
-            <i
-              className="bi bi-box-arrow-right"
-              style={{ fontSize: "20px" }}
-            ></i>
+            <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
             Log out
           </button>
           <button className="back-btn" onClick={() => navigate("/")}>
@@ -70,11 +66,11 @@ const ListStudents = () => {
           <tbody>
             {students.map((student) => (
               <tr key={student.id}>
-                <td>{student.nomeCompleto}</td>
+                <td>{student.name}</td>
                 <td>{student.ra}</td>
                 <td>{student.email}</td>
                 <td>
-                  <button onClick={() => handleRemove(student.id)}>
+                  <button onClick={() => handleRemove(student.id)} style={{ backgroundColor: "#F6725C" }}>
                     Remover
                   </button>
                 </td>

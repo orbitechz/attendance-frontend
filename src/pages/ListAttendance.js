@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import "../styles/ListAttendance.css";
 
 const ListAttendance = () => {
     const { id } = useParams();
@@ -30,10 +31,10 @@ const ListAttendance = () => {
                 </thead>
                 <tbody>
                     {attendances.map((attendance) => (
-                        <tr key={attendance.ra}>
-                            <td>{attendance.ra}</td>
-                            <td>{attendance.nome}</td>
-                            <td>{attendance.email}</td>
+                        <tr key={attendance.id}>
+                            <td>{attendance.student.ra}</td>
+                            <td>{attendance.student.name}</td>
+                            <td>{attendance.student.email}</td>
                             <td>{attendance.open ? "Presente" : "Faltou"}</td>
                         </tr>
                     ))}

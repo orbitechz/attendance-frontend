@@ -1,56 +1,50 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ListAttendance.css";
-import { useNavigate } from "react-router-dom";
 
 const ListAttendance = () => {
-  const [attendanceData, setAttendanceData] = useState([]);
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [attendances, setAttendances] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-        // Buscar dados dos alunos e das aulas
-        const [studentsResponse, lessonsResponse] = await Promise.all([
-          axios.get("/api/students"),
-          axios.get("/api/lesson"),
-        ]);
-
-        // Combinar dados de alunos e aulas
-        const combinedData = studentsResponse.data.flatMap((student) =>
-          lessonsResponse.data.map((lesson) => ({
-            id: `${student.id}-${lesson.id}`,
-            studentId: student.id,
-            studentName: student.nomeCompleto,
-            ra: student.ra,
-            lessonDate: lesson.date,
-            lessonName: lesson.name,
-            attendance: false, // valor inicial para presença
-          }))
+        // Usando a URL do primeiro código que já está funcionando
+        const response = await axios.get(
+          `http://localhost:8080/api/attendance/lesson/${id}`
         );
-
-        setAttendanceData(combinedData);
+        setAttendances(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Erro ao buscar a lista de presenças!", error);
+        setError(
+          "Erro ao buscar a lista de presenças. Tente novamente mais tarde."
+        );
+        setLoading(false);
       }
     };
 
     fetchAttendanceData();
-  }, []);
+  }, [id]);
 
-  const handleAttendance = async (id, value) => {
+  const handleAttendance = async (attendanceId, value) => {
     try {
-      // Atualizar presença no backend
-      await axios.post(`/api/attendance/${id}`, { attendance: value });
+      await axios.post(`/api/attendance/${attendanceId}`, { open: value });
 
       // Atualizar estado local
-      setAttendanceData((prevData) =>
-        prevData.map((item) =>
-          item.id === id ? { ...item, attendance: value } : item
+      setAttendances((prevAttendances) =>
+        prevAttendances.map((attendance) =>
+          attendance.id === attendanceId
+            ? { ...attendance, open: value }
+            : attendance
         )
       );
     } catch (error) {
-      console.error("Error updating attendance:", error);
+      console.error("Erro ao atualizar presença:", error);
     }
   };
 
@@ -61,10 +55,10 @@ const ListAttendance = () => {
   });
 
   return (
-    <div className="list-students-container">
+    <div className="list-attendance-container">
       <header className="header">
         <div className="main-header d-flex flex-column">
-          <p className="title">Lista de Presença</p>
+          <p className="title">Lista de Presenças</p>
           <p className="date">{today}</p>
         </div>
         <div className="actions d-flex gap-3">
@@ -81,39 +75,54 @@ const ListAttendance = () => {
           </button>
         </div>
       </header>
+
       <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome do Aluno</th>
-              <th>RA</th>
-              <th>Data da Aula</th>
-              <th>Nome da Aula</th>
-              <th>Presença</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attendanceData.map((item) => (
-              <tr key={item.id}>
-                <td>{item.studentName}</td>
-                <td>{item.ra}</td>
-                <td>{new Date(item.lessonDate).toLocaleDateString("pt-BR")}</td>
-                <td>{item.lessonName}</td>
-                <td>
-                  <select
-                    value={item.attendance}
-                    onChange={(e) =>
-                      handleAttendance(item.id, e.target.value === "true")
-                    }
-                  >
-                    <option value={false}>Falta</option>
-                    <option value={true}>Presente</option>
-                  </select>
-                </td>
+        {loading ? (
+          <p>Carregando...</p>
+        ) : error ? (
+          <p className="error-message">{error}</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>RA</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Data da Aula</th>
+                <th>Status da Presença</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {attendances.map((attendance) => (
+                <tr key={attendance.id}>
+                  <td>{attendance.student.ra}</td>
+                  <td>{attendance.student.name}</td>
+                  <td>{attendance.student.email}</td>
+                  <td>
+                    {attendance.lesson?.date &&
+                      new Date(attendance.lesson.date).toLocaleDateString(
+                        "pt-BR"
+                      )}
+                  </td>
+                  <td>
+                    <select
+                      value={attendance.open}
+                      onChange={(e) =>
+                        handleAttendance(
+                          attendance.id,
+                          e.target.value === "true"
+                        )
+                      }
+                    >
+                      <option value={false}>Falta</option>
+                      <option value={true}>Presente</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

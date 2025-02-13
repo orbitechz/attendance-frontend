@@ -8,6 +8,7 @@ const RegisterClass = () => {
   const [formData, setFormData] = useState({
     title: "",
     date: new Date().toISOString().split("T")[0],
+    open: true,
   });
 
   const [message, setMessage] = useState("");

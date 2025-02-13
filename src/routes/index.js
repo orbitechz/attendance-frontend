@@ -6,6 +6,9 @@ import ListStudents from "../pages/ListStudents";
 import RegisterClass from "../pages/RegisterClass";
 import ListClasses from "../pages/ListClasses";
 import RegisterStudents from "../pages/RegisterStudents";
+import LessonPresence from "../pages/LessonPresence";
+import RegisterAttendance from "../pages/RegisterAttendance";
+import AttendanceByLesson from "../pages/AttendanceByLesson";
 
 const AppRoutes = () => {
   return (
@@ -19,10 +22,12 @@ const AppRoutes = () => {
         <Route path="/list-students" element={<ListStudents />} />
         <Route path="/register-class" element={<RegisterClass />} />
         <Route path="/list-classes" element={<ListClasses />} />
+        <Route path="/lesson/:id/presence" element={<LessonPresence />} />
+        <Route path="registrar-presenca" element={<RegisterAttendance />} />
+        <Route path="/attendance-student/:id" element={<AttendanceByLesson />} />
       </Routes>
     </Router>
   );
 };
 
 export default AppRoutes;
-

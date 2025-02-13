@@ -1,31 +1,56 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../styles/ListStudents.css";
+import "../styles/ListAttendance.css";
 import { useNavigate } from "react-router-dom";
 
-const ListStudents = () => {
-  const [students, setStudents] = useState([]);
+const ListAttendance = () => {
+  const [attendanceData, setAttendanceData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchAttendanceData = async () => {
       try {
-        const response = await axios.get("/api/students");
-        setStudents(response.data);
+        // Buscar dados dos alunos e das aulas
+        const [studentsResponse, lessonsResponse] = await Promise.all([
+          axios.get("/api/students"),
+          axios.get("/api/lesson"),
+        ]);
+
+        // Combinar dados de alunos e aulas
+        const combinedData = studentsResponse.data.flatMap((student) =>
+          lessonsResponse.data.map((lesson) => ({
+            id: `${student.id}-${lesson.id}`,
+            studentId: student.id,
+            studentName: student.nomeCompleto,
+            ra: student.ra,
+            lessonDate: lesson.date,
+            lessonName: lesson.name,
+            attendance: false, // valor inicial para presença
+          }))
+        );
+
+        setAttendanceData(combinedData);
       } catch (error) {
-        console.error("Error fetching students:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchStudents();
+    fetchAttendanceData();
   }, []);
 
-  const handleRemove = async (id) => {
+  const handleAttendance = async (id, value) => {
     try {
-      await axios.delete(`/api/students/${id}`);
-      setStudents(students.filter((student) => student.id !== id));
+      // Atualizar presença no backend
+      await axios.post(`/api/attendance/${id}`, { attendance: value });
+
+      // Atualizar estado local
+      setAttendanceData((prevData) =>
+        prevData.map((item) =>
+          item.id === id ? { ...item, attendance: value } : item
+        )
+      );
     } catch (error) {
-      console.error("Error removing student:", error);
+      console.error("Error updating attendance:", error);
     }
   };
 
@@ -39,7 +64,7 @@ const ListStudents = () => {
     <div className="list-students-container">
       <header className="header">
         <div className="main-header d-flex flex-column">
-          <p className="title">Acessar Alunos</p>
+          <p className="title">Lista de Presença</p>
           <p className="date">{today}</p>
         </div>
         <div className="actions d-flex gap-3">
@@ -62,20 +87,28 @@ const ListStudents = () => {
             <tr>
               <th>Nome do Aluno</th>
               <th>RA</th>
-              <th>Email</th>
-              <th>Action</th>
+              <th>Data da Aula</th>
+              <th>Nome da Aula</th>
+              <th>Presença</th>
             </tr>
           </thead>
           <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
-                <td>{student.nomeCompleto}</td>
-                <td>{student.ra}</td>
-                <td>{student.email}</td>
+            {attendanceData.map((item) => (
+              <tr key={item.id}>
+                <td>{item.studentName}</td>
+                <td>{item.ra}</td>
+                <td>{new Date(item.lessonDate).toLocaleDateString("pt-BR")}</td>
+                <td>{item.lessonName}</td>
                 <td>
-                  <button onClick={() => handleRemove(student.id)}>
-                    Remover
-                  </button>
+                  <select
+                    value={item.attendance}
+                    onChange={(e) =>
+                      handleAttendance(item.id, e.target.value === "true")
+                    }
+                  >
+                    <option value={false}>Falta</option>
+                    <option value={true}>Presente</option>
+                  </select>
                 </td>
               </tr>
             ))}
@@ -86,4 +119,4 @@ const ListStudents = () => {
   );
 };
 
-export default ListStudents;
+export default ListAttendance;

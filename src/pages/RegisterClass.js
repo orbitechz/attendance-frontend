@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RegisterClass.css";
 import axios from "axios";
+import axiosInstance from "../interceptor/axiosInstance";
 
 const RegisterClass = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const RegisterClass = () => {
       const formattedDate = `${formData.date}T00:00:00`;
       const requestData = { ...formData, date: formattedDate };
 
-      const response = await axios.post("/api/lesson", requestData);
+      const response = await axiosInstance.post("/api/lesson", requestData);
       console.log("Class data submitted:", response.data);
       setMessage("Aula cadastrada com sucesso!");
       setMessageType("success");
@@ -47,6 +48,11 @@ const RegisterClass = () => {
     month: "long",
   });
 
+  const handlelogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
     <div className="register-class-container">
       <header className="header">
@@ -55,14 +61,14 @@ const RegisterClass = () => {
           <p className="date">{today}</p>
         </div>
         <div className="actions d-flex gap-3">
-          <button className="logout-btn">
+          <button className="logout-btn" onClick={handlelogout}>
             <i
               className="bi bi-box-arrow-right"
               style={{ fontSize: "20px" }}
             ></i>
             Log out
           </button>
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button className="back-btn" onClick={() => navigate("/home")}>
             <i className="bi bi-house-door" style={{ fontSize: "20px" }}></i>
             Tela Inicial
           </button>

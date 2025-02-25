@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import PortalButton from '../components/PortalButton';
 import "../styles/RegisterAttendance.css";
+import axiosInstance from '../interceptor/axiosInstance';
 
 const RegisterAttendance = () => {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const RegisterAttendance = () => {
     useEffect(() => {
         const fetchLessons = async () => {
             try {
-                const response = await axios.get('/api/lesson');
+                const response = await axiosInstance.get('/api/lesson');
                 setLessons(response.data);
             } catch (error) {
                 console.error('Error fetching lessons:', error);
@@ -27,9 +28,13 @@ const RegisterAttendance = () => {
         month: "long",
     });
 
-    // Filter and sort lessons by date
     const openLessons = lessons.filter(lesson => lesson.open).sort((a, b) => new Date(a.date) - new Date(b.date));
     const closedLessons = lessons.filter(lesson => !lesson.open).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    const handlelogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    }
 
     return (
         <div className="register-students-container">
@@ -39,11 +44,11 @@ const RegisterAttendance = () => {
                     <p className="date">{today}</p>
                 </div>
                 <div className="actions d-flex gap-3">
-                    <button className="logout-btn">
+                    <button className="logout-btn" onClick={handlelogout}>
                         <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
                         Log out
                     </button>
-                    <button className="back-btn" onClick={() => navigate("/")}>
+                    <button className="back-btn" onClick={() => navigate("/home")}>
                         <i className="bi bi-house-door" style={{ fontSize: "20px" }}></i>
                         Tela Inicial
                     </button>

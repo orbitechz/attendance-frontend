@@ -11,6 +11,12 @@ const AreaAluno = () => {
         day: 'numeric',
         month: 'long'
     })
+
+    const handlelogout = () => {
+        localStorage.removeItem('token')
+        navigate('/')
+    }
+
     return (
         <div className="portal-aluno-container">
             <header className="header">
@@ -19,14 +25,14 @@ const AreaAluno = () => {
                     <p className="date">{today}</p>
                 </div>
                 <div className="actions d-flex gap-3">
-                    <button className="logout-btn">
+                    <button className="logout-btn" onClick={handlelogout}>
                         <i
                             className="bi bi-box-arrow-right"
                             style={{ fontSize: '20px' }}
                         ></i>
                         Log out
                     </button>
-                    <button className="back-btn" onClick={() => navigate('/')}>
+                    <button className="back-btn" onClick={() => navigate('/home')}>
                         <i className="bi bi-house-door" style={{ fontSize: '20px' }}></i>
                         Tela Inicial
                     </button>

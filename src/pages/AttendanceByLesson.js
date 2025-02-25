@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/AttendanceByLesson.css"; 
+import axiosInstance from '../interceptor/axiosInstance';
 
 const AttendanceByLesson = () => {
     const { id } = useParams();
@@ -14,7 +15,7 @@ const AttendanceByLesson = () => {
     useEffect(() => {
         const fetchLesson = async () => {
             try {
-                const response = await axios.get(`/api/lesson/${id}`);
+                const response = await axiosInstance.get(`/api/lesson/${id}`);
                 setLesson(response.data);
             } catch (error) {
                 console.error('Erro ao buscar aula:', error);
@@ -27,7 +28,7 @@ const AttendanceByLesson = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/attendance', {
+            const response = await axiosInstance.post('/api/attendance', {
                 student: { ra: studentRA },
                 lesson: { id: lesson.id },
                 open: true
@@ -48,6 +49,11 @@ const AttendanceByLesson = () => {
         month: "long",
     });
 
+    const handlelogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    }
+
     return (
         <div className="register-class-container">
             <header className="header">
@@ -56,11 +62,11 @@ const AttendanceByLesson = () => {
                     <p className="date">{today}</p>
                 </div>
                 <div className="actions d-flex gap-3">
-                    <button className="logout-btn">
+                    <button className="logout-btn" onClick={handlelogout}>
                         <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
                         Log out
                     </button>
-                    <button className="back-btn" onClick={() => navigate("/")}>
+                    <button className="back-btn" onClick={() => navigate("/home")}>
                         <i className="bi bi-house-door" style={{ fontSize: "20px" }}></i>
                         Tela Inicial
                     </button>

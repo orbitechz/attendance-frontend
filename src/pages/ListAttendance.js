@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from '../interceptor/axiosInstance';
 
 const ListAttendance = () => {
     const { id } = useParams();
@@ -10,7 +11,7 @@ const ListAttendance = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/attendance/lesson/${id}`)
+        axiosInstance.get(`http://localhost:8080/api/attendance/lesson/${id}`)
             .then(response => {
                 setAttendances(response.data);
                 setLoading(false);
@@ -28,6 +29,11 @@ const ListAttendance = () => {
         month: 'long'
     });
 
+    const handlelogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    }
+
     return (
         <div className="list-attendance-container">
             <header className="header">
@@ -36,11 +42,11 @@ const ListAttendance = () => {
                     <p className="date">{today}</p>
                 </div>
                 <div className="actions d-flex gap-3">
-                    <button className="logout-btn">
+                    <button className="logout-btn" onClick={handlelogout}>
                         <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
                         Log out
                     </button>
-                    <button className="back-btn" onClick={() => navigate("/")}>
+                    <button className="back-btn" onClick={() => navigate("/home")}>
                         <i className="bi bi-house-door" style={{ fontSize: "20px" }}></i>
                         Tela Inicial
                     </button>

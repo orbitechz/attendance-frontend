@@ -9,13 +9,15 @@ import RegisterStudents from "../pages/RegisterStudents";
 import RegisterAttendance from "../pages/RegisterAttendance";
 import AttendanceByLesson from "../pages/AttendanceByLesson";
 import ListAttendance from "../pages/ListAttendance";
+import Login from "../pages/login/Login";
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/area-professor" element={<AreaProfessor />} />
         <Route path="/area-aluno" element={<AreaAluno />} />
         <Route path="/register-student" element={<RegisterStudents />} />
@@ -25,6 +27,7 @@ const AppRoutes = () => {
         <Route path="registrar-presenca" element={<RegisterAttendance />} />
         <Route path="/attendance-student/:id" element={<AttendanceByLesson />} />
         <Route path="/lesson/:id/presence" element={<ListAttendance />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

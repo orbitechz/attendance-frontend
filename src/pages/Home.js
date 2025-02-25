@@ -14,6 +14,11 @@ const Home = () => {
     month: "long",
   });
 
+  const handleLogout = async () => {
+        localStorage.removeItem("token");
+        navigate("/");
+  };
+
   return (
     <div className="home-container">
       <header className="header">
@@ -21,7 +26,7 @@ const Home = () => {
           <p className="title">Sistema de Chamada</p>
           <p className="date">{today}</p>
         </div>
-        <button className="logout-btn">
+        <button className="logout-btn" onClick={handleLogout}>
           <i className="bi bi-box-arrow-right" style={{ fontSize: "20px" }}></i>
           Log out
         </button>

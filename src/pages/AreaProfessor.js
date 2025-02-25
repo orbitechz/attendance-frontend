@@ -12,6 +12,11 @@ const AreaProfessor = () => {
     month: "long",
   });
 
+  const handlelogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
     <div className="area-professor-container">
       <header className="header">
@@ -24,10 +29,11 @@ const AreaProfessor = () => {
             <i
               className="bi bi-box-arrow-right"
               style={{ fontSize: "20px" }}
+              onClick={handlelogout}
             ></i>
             Log out
           </button>
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button className="back-btn" onClick={() => navigate("/home")}>
             <i className="bi bi-house-door" style={{ fontSize: "20px" }}></i>
             Tela Inicial
           </button>

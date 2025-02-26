@@ -19,29 +19,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+  
+    const isRa = !email.includes("@");
+  
     const request = {
-      username: email,
+      [isRa ? "ra" : "username"]: email,
       password: password,
     };
-
+  
     try {
       const response = await axiosInstance.post("/auth/authenticate", request);
-
+  
       if (response.status !== 200) {
         throw new Error("Authentication failed");
       }
-
+  
       const data = response.data;
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("refresh_token", data.refresh_token);
-
+  
       navigate("/home");
     } catch (error) {
       setError("Invalid email or password");
     }
   };
-
+  
   return (
     <div className="login-container">
       <header className="header">
@@ -60,7 +62,7 @@ const Login = () => {
         <div className="form-group">
           <label htmlFor="email">E-mail ou RA</label>
           <input
-            type="email"
+            type="text"
             id="email"
             className="form-control"
             value={email}

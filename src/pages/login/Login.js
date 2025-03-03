@@ -20,6 +20,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
+    const isRa = !email.includes("@");
     const request = {
       username: email,
       password: password,
@@ -32,9 +33,9 @@ const Login = () => {
         throw new Error("Authentication failed");
       }
 
-      const data = response.data;
-      localStorage.setItem("access_token", data.access_token);
-      localStorage.setItem("refresh_token", data.refresh_token);
+      const { access_token, refresh_token } = response.data;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
 
       navigate("/home");
     } catch (error) {

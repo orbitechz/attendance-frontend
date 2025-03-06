@@ -19,6 +19,7 @@ const RegisterStudents = () => {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import PortalButton from '../components/PortalButton';
 import "../styles/RegisterAttendance.css";
 import axiosInstance from '../interceptor/axiosInstance';

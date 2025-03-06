@@ -21,7 +21,6 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    const isRa = !email.includes("@");
     const request = {
       username: email,
       password: password,

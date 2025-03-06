@@ -14,6 +14,7 @@ const RegisterClass = () => {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +30,7 @@ const RegisterClass = () => {
       const formattedDate = `${formData.date}T00:00:00`;
       const requestData = { ...formData, date: formattedDate };
 
-      const response = await axiosInstance.post("/api/lesson", requestData);
+      const response = await axiosInstance.post(`${apiUrl}/api/lesson`, requestData);
       console.log("Class data submitted:", response.data);
       setMessage("Aula cadastrada com sucesso!");
       setMessageType("success");

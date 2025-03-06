@@ -9,11 +9,12 @@ const ListClasses = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedOpenStatus, setSelectedOpenStatus] = useState("all");
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const response = await axiosInstance.get("http://localhost:8080/api/lesson"); 
+        const response = await axiosInstance.get(`${apiUrl}/api/lesson`);
         setLessons(response.data);
       } catch (error) {
         console.error("Error fetching lessons:", error);
@@ -25,7 +26,7 @@ const ListClasses = () => {
 
   const handleRemove = async (id) => {
     try {
-      await axiosInstance.delete(`http://localhost:8080/api/lesson/${id}`);
+      await axiosInstance.delete(`${apiUrl}/api/lesson/${id}`);
       setLessons(lessons.filter((lesson) => lesson.id !== id));
     } catch (error) {
       console.error("Error removing lesson:", error);
@@ -38,7 +39,7 @@ const ListClasses = () => {
 
   const handleClose = async (id) => {
     try {
-      const response = await axiosInstance.put(`http://localhost:8080/api/lesson/close/${id}`);
+      const response = await axiosInstance.put(`${apiUrl}/api/lesson/close/${id}`);
       setLessons(lessons.map((lesson) => (lesson.id === id ? response.data : lesson)));
     } catch (error) {
       console.error("Error closing lesson:", error);

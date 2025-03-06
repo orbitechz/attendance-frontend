@@ -63,7 +63,7 @@ const RegisterStudents = () => {
         password: formatDateOfBirth(formData.dateOfBirth),
       };
       try {
-        const response = await axiosInstance.post("http://localhost:8080/api/student", payload, {
+        const response = await axiosInstance.post(`${apiUrl}/api/student`, payload, {
           headers: { "Content-Type": "application/json" }
         });
         console.log("Aluno cadastrado com sucesso:", response.data);

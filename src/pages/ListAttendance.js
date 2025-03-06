@@ -9,9 +9,10 @@ const ListAttendance = () => {
     const [attendances, setAttendances] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        axiosInstance.get(`http://localhost:8080/api/attendance/lesson/${id}`)
+        axiosInstance.get(`${apiUrl}/api/attendance/lesson/${id}`)
             .then(response => {
                 setAttendances(response.data);
                 setLoading(false);

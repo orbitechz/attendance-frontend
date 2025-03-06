@@ -11,11 +11,12 @@ const AttendanceByLesson = () => {
     const [lesson, setLesson] = useState(null);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const fetchLesson = async () => {
             try {
-                const response = await axiosInstance.get(`/api/lesson/${id}`);
+                const response = await axiosInstance.get(`${apiUrl}/api/lesson/${id}`);
                 setLesson(response.data);
             } catch (error) {
                 console.error('Erro ao buscar aula:', error);
@@ -28,7 +29,7 @@ const AttendanceByLesson = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axiosInstance.post('/api/attendance', {
+            const response = await axiosInstance.post(`${apiUrl}/api/attendance`, {
                 student: { ra: studentRA },
                 lesson: { id: lesson.id },
                 open: true

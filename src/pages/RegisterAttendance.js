@@ -8,11 +8,12 @@ import axiosInstance from '../interceptor/axiosInstance';
 const RegisterAttendance = () => {
     const navigate = useNavigate();
     const [lessons, setLessons] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const fetchLessons = async () => {
             try {
-                const response = await axiosInstance.get('/api/lesson');
+                const response = await axiosInstance.get(`${apiUrl}/api/lesson`);
                 setLessons(response.data);
             } catch (error) {
                 console.error('Error fetching lessons:', error);

@@ -6,12 +6,11 @@ import axiosInstance from "../interceptor/axiosInstance";
 const ListStudents = () => {
   const [students, setStudents] = useState([]);
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axiosInstance.get(`${apiUrl}/api/student`);
+        const response = await axiosInstance.get(`/api/student`);
         setStudents(response.data);
       } catch (error) {
         console.error("Error fetching students:", error);
@@ -19,11 +18,11 @@ const ListStudents = () => {
     };
 
     fetchStudents();
-  }, [apiUrl]);
+  }, []);
 
   const handleRemove = async (id) => {
     try {
-      await axiosInstance.delete(`${apiUrl}/api/student/${id}`);
+      await axiosInstance.delete(`/api/student/${id}`);
       setStudents(students.filter((student) => student.id !== id));
     } catch (error) {
       console.error("Error removing student:", error);

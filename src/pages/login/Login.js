@@ -9,7 +9,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const apiUrl = process.env.REACT_APP_API_URL;
 
   const today = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
@@ -27,7 +26,7 @@ const Login = () => {
     };
 
     try {
-      const response = await axiosInstance.post(`${apiUrl}/auth/authenticate`, request);
+      const response = await axiosInstance.post(`/auth/authenticate`, request);
 
       if (response.status !== 200) {
         throw new Error("Authentication failed");

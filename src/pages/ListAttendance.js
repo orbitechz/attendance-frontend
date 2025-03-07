@@ -8,10 +8,9 @@ const ListAttendance = () => {
     const [attendances, setAttendances] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        axiosInstance.get(`${apiUrl}/api/attendance/lesson/${id}`)
+        axiosInstance.get(`/api/attendance/lesson/${id}`)
             .then(response => {
                 setAttendances(response.data);
                 setLoading(false);
@@ -21,7 +20,7 @@ const ListAttendance = () => {
                 setError('Erro ao buscar a lista de presenças. Tente novamente mais tarde.');
                 setLoading(false);
             });
-    }, [id, apiUrl]);
+    }, [id]);
 
     const today = new Date().toLocaleDateString('pt-BR', {
         weekday: 'long',

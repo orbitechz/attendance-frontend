@@ -19,7 +19,6 @@ const RegisterStudents = () => {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +63,7 @@ const RegisterStudents = () => {
         password: formatDateOfBirth(formData.dateOfBirth),
       };
       try {
-        const response = await axiosInstance.post(`${apiUrl}/api/student`, payload, {
+        const response = await axiosInstance.post(`/api/student`, payload, {
           headers: { "Content-Type": "application/json" }
         });
         console.log("Aluno cadastrado com sucesso:", response.data);

@@ -21,7 +21,7 @@ const ListAttendance = () => {
                 setError('Erro ao buscar a lista de presenças. Tente novamente mais tarde.');
                 setLoading(false);
             });
-    }, [id]);
+    }, [id, apiUrl]);
 
     const today = new Date().toLocaleDateString('pt-BR', {
         weekday: 'long',

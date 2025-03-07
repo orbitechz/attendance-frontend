@@ -23,7 +23,7 @@ const AttendanceByLesson = () => {
         };
 
         fetchLesson();
-    }, [id]);
+    }, [id, apiUrl]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

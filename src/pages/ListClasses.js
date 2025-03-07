@@ -21,9 +21,9 @@ const ListClasses = () => {
     };
 
     fetchLessons();
-  }, []);
+  }, [apiUrl]);
 
-  const handleRemove = async (id) => {
+  const handleRemove = async (id, apiUrl) => {
     try {
       await axiosInstance.delete(`${apiUrl}/api/lesson/${id}`);
       setLessons(lessons.filter((lesson) => lesson.id !== id));

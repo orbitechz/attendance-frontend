@@ -20,7 +20,7 @@ const RegisterAttendance = () => {
         };
 
         fetchLessons();
-    }, []);
+    }, [apiUrl]);
 
     const today = new Date().toLocaleDateString("pt-BR", {
         weekday: "long",

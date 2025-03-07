@@ -19,7 +19,7 @@ const ListStudents = () => {
     };
 
     fetchStudents();
-  }, []);
+  }, [apiUrl]);
 
   const handleRemove = async (id) => {
     try {

@@ -9,7 +9,7 @@ server {
     }
 
     location /attendance-api {
-        rewrite ^/attendance-api(/.*)$ $1 break;
+        rewrite ^/attendance-api(/.*)${DOLLAR} ${DOLLAR}1 break;
         proxy_pass http://${API_HOST}:${API_PORT}/;
         proxy_set_header Host ${DOLLAR}host;
         proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
